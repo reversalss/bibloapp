@@ -1,12 +1,14 @@
-﻿# bibloapp
+﻿# Bibloapp
 
 
 Bibloapp is a project I made for my development class <br>
-It is written in Python, and uses the Tkinter module of python for the GUI.
+the project is written in Python, and uses the Tkinter module of python for the GUI.
 
 
 <br>
-<h1> File Structure</h1>
+
+
+# File Structure
 
 ```
 📂 / HALVÅRSPROSJEKT
@@ -15,3 +17,16 @@ It is written in Python, and uses the Tkinter module of python for the GUI.
 ├── 🗒️main.py - app
 └── 🗒️users.txt - registered users
 ```
+
+<br>
+
+# Adding Books
+
+To add a book to be rented you have to login to the admin account, the studentID is 1, and the password is 'Secure' by default.
+
+
+<br>
+
+# Renting or Returning
+
+To rent or return a book you can press the corresponding button after logging in, then choosing the book which you want to rent or return
