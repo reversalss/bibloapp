@@ -47,18 +47,24 @@ def appScreen(username, studentID):
 
 
 
-
     # LABELS 
 
-    welcome_label = Label(appS, text=f"Welcome, {username}!", font=("JetBrains Mono", 20), bg=mainBlue, fg="white")
-    welcome_label.grid(row=1, column=1, padx=5, pady=5, sticky=E)
+    welcome_label = Label(appS, text=f"Welcome, {username}!", font=("JetBrains Mono", 25), bg=mainBlue, fg="white")
+    welcome_label.pack(pady=60)
 
-    
+
 
     # BUTTONS
-    
-    rent_button = Button(appS, text="Rent", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
-    rent_button.grid(row=5, column=1, padx=5, pady=15, sticky=E)
+
+    rent_button = Button(appS, text="Rent Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15")
+    rent_button.pack(pady=(40, 0))
+
+    return_button = Button(appS, text="Return Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15")
+    return_button.pack(pady=(15, 0))
+
+    if int(studentID) == 1:
+        add_book = Button(appS, text="Add Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15")
+        add_book.pack(pady=(50, 0))
 
 def login():
 
@@ -112,7 +118,7 @@ def login():
                 if i[2].strip("\n") == password_var:
                     logW.destroy()
                     main.destroy()
-                    appScreen(i[1], studentID_var)
+                    appScreen(i[1], i[0])
                     f.close()
                     break
         else:
