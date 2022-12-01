@@ -17,6 +17,8 @@ secBlue = "#11589e"
 def close(win):
     win.destroy()
 
+
+
 def popup(info: str):
 
     # SET UP POPUP WINDOW
@@ -36,6 +38,8 @@ def popup(info: str):
 
     exit_button = Button(popup_win, text="Ok", width=5, command=lambda: (close(popup_win)))
     exit_button.place(x=225, y=100)
+
+
 
 def appScreen(username, studentID):
 
@@ -66,7 +70,6 @@ def appScreen(username, studentID):
 
     def bookadd():
 
-    
         addB = Tk()
         addB.geometry("400x500")
         addB.iconbitmap("logo.ico")
@@ -76,7 +79,7 @@ def appScreen(username, studentID):
 
         # Widgets
 
-        header = Label(addB, text="Register")
+        header = Label(addB, text="Add Book")
         header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
         header.pack(pady=25)
 
@@ -132,10 +135,40 @@ def appScreen(username, studentID):
         submit_button.pack(pady=25)
 
 
+    ###########################################
+
+    def bookremove():
+
+        addB = Tk()
+        addB.geometry("400x500")
+        addB.iconbitmap("logo.ico")
+        addB.title("BibloApp")
+        addB.config(background="#04386b")
+        addB.resizable(False, False)
+
+        # Widgets
+
+        header = Label(addB, text="Add Book")
+        header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
+        header.pack(pady=25)
+
+
+
+        
+
+
+
+    ###########################################
 
     if int(studentID) == 1:
         add_book = Button(appS, text="Add Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookadd)
         add_book.pack(pady=(50, 0))
+
+    if int(studentID) == 1:
+        add_book = Button(appS, text="Remove Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookremove)
+        add_book.pack(pady=(50, 0))
+
+
 
 def login():
 
@@ -204,6 +237,8 @@ def login():
     submit_button = Button(logW, text="Login", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
     submit_button.config(command=loginUser)
     submit_button.pack(pady=25)
+
+
 
 def register():
 
