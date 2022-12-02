@@ -1,5 +1,6 @@
 try:
     from tkinter import *
+    from tkinter import ttk
 except ImportError:
     print("Can't import modules")
 
@@ -125,7 +126,7 @@ def appScreen(username, studentID):
             else:
                 # if it doesn't, make a new book with new info
                 f = open("books.txt", "a")
-                f.write(f"\n{ISBN_var}:{bookname_var}")
+                f.write(f"\n{ISBN_var}|{bookname_var}")
                 popup("Adding book complete! You can now close this window.")
                 f.close()
 
@@ -139,22 +140,61 @@ def appScreen(username, studentID):
 
     def bookremove():
 
-        addB = Tk()
-        addB.geometry("400x500")
-        addB.iconbitmap("logo.ico")
-        addB.title("BibloApp")
-        addB.config(background="#04386b")
-        addB.resizable(False, False)
+        remB = Tk()
+        remB.geometry("400x500")
+        remB.iconbitmap("logo.ico")
+        remB.title("BibloApp")
+        remB.config(background="#04386b")
+        remB.resizable(False, False)
 
         # Widgets
 
-        header = Label(addB, text="Add Book")
+        header = Label(remB, text="Remove")
         header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
         header.pack(pady=25)
 
 
+        books = []
 
+        f = open("books.txt", "r")
+        for i in f.readlines():
+            i = i.split("|")
+            books.append(f"{i[0]}: {i[1]}")
         
+        book_combobox = ttk.Combobox(remB)
+        book_combobox.config(values=books)
+        book_combobox.config(background=secBlue, foreground="white", width=50)
+        book_combobox['state'] = 'readonly'
+        book_combobox.pack(pady=(50,0))
+
+
+        def removebook():
+
+            book = book_combobox.get()
+            book = book.split(":") 
+            book = f"{book[0]}|{book[1].strip()}" # <ISBN>: <NAME> -> <ISBN>|<NAME>
+
+            with open("books.txt", "r+") as f:
+                d = f.readlines()
+                f.seek(0)
+                for i in d:
+                    if i != book:
+                        f.write(i)
+                f.truncate()
+                popup("Book Removed!")
+
+            
+
+            
+
+                        
+
+
+        submit_button = Button(remB, text="Remove Book", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
+        submit_button.config(command=removebook)
+        submit_button.pack(pady=25)
+
+
 
 
 
@@ -166,7 +206,7 @@ def appScreen(username, studentID):
 
     if int(studentID) == 1:
         add_book = Button(appS, text="Remove Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookremove)
-        add_book.pack(pady=(50, 0))
+        add_book.pack(pady=(15, 0))
 
 
 
