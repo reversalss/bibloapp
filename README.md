@@ -20,13 +20,13 @@ the project is written in Python, and uses the Tkinter module of python for the 
 
 <br>
 
-# Adding Books
+# Adding or Removing Books
 
-To add a book to be rented you have to login to the admin account, the studentID is 1, and the password is 'Secure' by default.
+To add or remove a book to be rented you have to login to the admin account, the studentID is 1, and the password is 'Secure' by default.
 
 
 <br>
 
-# Renting or Returning
+# Renting or Returning Books
 
 To rent or return a book you can press the corresponding button after logging in, then choosing the book which you want to rent or return
