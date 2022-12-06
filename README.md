@@ -12,9 +12,11 @@ the project is written in Python, and uses the Tkinter module of python for the 
 
 ```
 📂 / HALVÅRSPROSJEKT
-├── 🗒️README.MD - what you're reading now
-├── 🗒️logo.ico - app icon
-├── 🗒️main.py - app
+├── ▶️ main.py - app
+├── 📒README.MD - what you're reading now
+├── 🖼️logo.ico - app icon
+├── 🗒️rented.txt - books rented
+├── 🗒️books.txt - books availible
 └── 🗒️users.txt - registered users
 ```
 
