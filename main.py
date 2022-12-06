@@ -42,6 +42,7 @@ def popup(info: str):
 
 
 
+
 def appScreen(username, studentID):
 
     appS = Tk()
@@ -114,21 +115,24 @@ def appScreen(username, studentID):
 
             bookname_var = bookname_entry.get()
             ISBN_var = ISBN_entry.get()
-
-            # check if ISBN already exists
-
-            f = open("books.txt", "r")
-            for i in f.readlines():
-                if i.split("|")[0] == ISBN_var:
-                    popup("ISBN allerede lagt til")
-                    f.close()
-                    break
+            
+            if len(bookname_var) == 0 or len(ISBN_var) == 0:
+                popup("One of the fields are empty!\n please fill all fields")
             else:
-                # if it doesn't, make a new book with new info
-                f = open("books.txt", "a")
-                f.write(f"\n{ISBN_var}|{bookname_var}")
-                popup("Adding book complete! You can now close this window.")
-                f.close()
+                # check if ISBN already exists
+
+                f = open("books.txt", "r")
+                for i in f.readlines():
+                    if i.split("|")[0] == ISBN_var:
+                        popup("ISBN allerede lagt til")
+                        f.close()
+                        break
+                else:
+                    # if it doesn't, make a new book with new info
+                    f = open("books.txt", "a")
+                    f.write(f"\n{ISBN_var}|{bookname_var}")
+                    popup("Adding book complete! You can now close this window.")
+                    f.close()
 
                 
         submit_button = Button(addB, text="Add Book", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
@@ -195,10 +199,41 @@ def appScreen(username, studentID):
         submit_button.pack(pady=25)
 
 
-
-
-
     ###########################################
+
+
+    def bookrent():
+
+
+        remB = Tk()
+        remB.geometry("400x500")
+        remB.iconbitmap("logo.ico")
+        remB.title("BibloApp")
+        remB.config(background="#04386b")
+        remB.resizable(False, False)
+
+        # Widgets
+
+        header = Label(remB, text="Remove")
+        header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
+        header.pack(pady=25)
+
+
+        books = []
+
+        f = open("books.txt", "r")
+        for i in f.readlines():
+            i = i.split("|")
+            books.append(f"{i[0]}: {i[1]}")
+        
+        book_combobox = ttk.Combobox(remB)
+        book_combobox.config(values=books)
+        book_combobox.config(background=secBlue, foreground="white", width=50)
+        book_combobox['state'] = 'readonly'
+        book_combobox.pack(pady=(50,0))
+
+        
+
 
     if int(studentID) == 1:
         add_book = Button(appS, text="Add Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookadd)
