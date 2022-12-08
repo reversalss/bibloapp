@@ -10,9 +10,6 @@ except ImportError:
 mainBlue = "#04386b"
 secBlue = "#11589e"
 
-
-
-
 # DEFS
 
 def close(win):
@@ -130,7 +127,7 @@ def appScreen(username, studentID):
                 else:
                     # if it doesn't, make a new book with new info
                     f = open("books.txt", "a")
-                    f.write(f"\n{ISBN_var}|{bookname_var}")
+                    f.write(f"{ISBN_var}|{bookname_var}\n")
                     popup("Adding book complete! You can now close this window.")
                     f.close()
 
@@ -162,8 +159,10 @@ def appScreen(username, studentID):
 
         f = open("books.txt", "r")
         for i in f.readlines():
-            i = i.split("|")
-            books.append(f"{i[0]}: {i[1]}")
+            if len(i) != "":
+                i = i.split("|")
+                books.append(f"{i[0]}: {i[1]}")
+            
         
         book_combobox = ttk.Combobox(remB)
         book_combobox.config(values=books)
@@ -176,13 +175,14 @@ def appScreen(username, studentID):
 
             book = book_combobox.get()
             book = book.split(":") 
-            book = f"{book[0]}|{book[1].strip()}" # <ISBN>: <NAME> -> <ISBN>|<NAME>
+            book = f"{book[0].strip()}|{book[1].strip()}" # <ISBN>: <NAME> -> <ISBN>|<NAME>
+            print(f"removing {book}")
 
             with open("books.txt", "r+") as f:
                 d = f.readlines()
                 f.seek(0)
                 for i in d:
-                    if i != book:
+                    if i.strip("\n") != book:
                         f.write(i)
                 f.truncate()
                 popup("Book Removed!")
