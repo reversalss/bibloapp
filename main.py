@@ -96,7 +96,7 @@ def appScreen(username, studentID):
 
             # remove book
             with open("rented.txt", "a") as f:
-                f.write(f"\n{book}|{studentID}")
+                f.write(f"{book}|{studentID}\n")
                 popup("Book successfully rented!\nYou may now close this window.")
 
 
@@ -151,7 +151,7 @@ def appScreen(username, studentID):
 
             # remove book
             with open("books.txt", "a") as f:
-                f.write(f"\n{book}")
+                f.write(f"{book}\n")
                 popup("Book successfully returned!\nYou may now close this window.")
 
 
@@ -163,23 +163,9 @@ def appScreen(username, studentID):
                         f.write(i)
                 f.truncate()
 
-        submit_button = Button(retB, text="Add Book", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
+        submit_button = Button(retB, text="Return", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
         submit_button.config(command=returnbook)
         submit_button.pack(pady=25)
-
-
-
-
-
-
-    # BUTTONS
-
-    rent_button = Button(appS, text="Rent Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookrent)
-    rent_button.pack(pady=(40, 0))
-
-    return_button = Button(appS, text="Return Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookreturn)
-    return_button.pack(pady=(15, 0))
-
 
     def bookadd():
 
@@ -250,9 +236,6 @@ def appScreen(username, studentID):
         submit_button.config(command=addbook)
         submit_button.pack(pady=25)
 
-
-    ###########################################
-
     def bookremove():
 
         remB = Tk()
@@ -313,9 +296,13 @@ def appScreen(username, studentID):
         submit_button.pack(pady=25)
 
 
-    ###########################################
+    # BUTTONS
 
+    rent_button = Button(appS, text="Rent Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookrent)
+    rent_button.pack(pady=(40, 0))
 
+    return_button = Button(appS, text="Return Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookreturn)
+    return_button.pack(pady=(15, 0))
 
     if int(studentID) == 1:
         add_book = Button(appS, text="Add Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookadd)
@@ -326,8 +313,15 @@ def appScreen(username, studentID):
         add_book.pack(pady=(15, 0))
 
 
+    def logout():
+        appS.destroy()
+        main()
 
-def login():
+    logout_button = Button(appS, text="Log out", font=('JetBrains mono', 10), bg="#11589e", fg="white", relief="flat", width="15", command=logout)
+    logout_button.pack(side="left", padx=5)
+
+
+def login(win):
 
     # SET UP REGISTER WINDOW
     
@@ -378,7 +372,7 @@ def login():
             if i[0] == studentID_var: 
                 if i[2].strip("\n") == password_var:
                     logW.destroy()
-                    main.destroy()
+                    win.destroy()
                     appScreen(i[1], i[0])
                     f.close()
                     break
@@ -394,8 +388,6 @@ def login():
     submit_button = Button(logW, text="Login", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
     submit_button.config(command=loginUser)
     submit_button.pack(pady=25)
-
-
 
 def register():
 
@@ -475,36 +467,39 @@ def register():
     submit_button.config(command=registerUser)
     submit_button.pack(pady=25)
 
+def main():
 
-# set up main window
+    # set up main window
 
-main = Tk()
-main.geometry("800x600")
-main.iconbitmap("logo.ico")
-main.title("BibloApp")
-main.config(background="#04386b")
-main.resizable(False, False)
-
-
-# MAIN WINDOW HEADERS
-
-header = Label(main, text="BibloApp")
-header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
-header.pack(pady=50)
+    mainW = Tk()
+    mainW.geometry("800x600")
+    mainW.iconbitmap("logo.ico")
+    mainW.title("BibloApp")
+    mainW.config(background="#04386b")
+    mainW.resizable(False, False)
 
 
+    # MAIN WINDOW HEADERS
 
-# MAIN WINDOW BUTTONS
-
-button_login = Button(text="Login", font=('JetBrains mono', 25), bg="#11589e", fg="white", relief="flat", width="15", command=login)
-button_login.place(x=245, y=250)
-
-button_register = Button(text="Register", font=('JetBrains mono', 25), bg="#11589e", fg="white", relief="flat", width="15", command=register)
-button_register.place(x=245, y=350)
+    header = Label(mainW, text="BibloApp")
+    header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
+    header.pack(pady=50)
 
 
 
+    # MAIN WINDOW BUTTONS
+
+    button_login = Button(text="Login", font=('JetBrains mono', 25), bg="#11589e", fg="white", relief="flat", width="15", command=lambda: login(mainW))
+    button_login.place(x=245, y=250)
+
+    button_register = Button(text="Register", font=('JetBrains mono', 25), bg="#11589e", fg="white", relief="flat", width="15", command=register)
+    button_register.place(x=245, y=350)
 
 
 
-main.mainloop()
+
+
+
+    mainW.mainloop()
+
+main()
