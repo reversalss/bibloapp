@@ -227,28 +227,23 @@ def appScreen(username, studentID):
             bookname_var = bookname_entry.get()
             ISBN_var = ISBN_entry.get()
 
-            try:
-                ISBN_var = int(ISBN_entry) 
-            except: popup("ISBN can only be a number")
+            if len(bookname_var) == 0 or len(ISBN_var) == 0:
+                popup("One of the fields are empty!\n please fill all fields")
             else:
-            
-                if len(bookname_var) == 0 or len(ISBN_var) == 0:
-                    popup("One of the fields are empty!\n please fill all fields")
-                else:
-                    # check if ISBN already exists
+                # check if ISBN already exists
 
-                    f = open("books.txt", "r")
-                    for i in f.readlines():
-                        if i.split("|")[0] == ISBN_var:
-                            popup("ISBN allerede lagt til")
-                            f.close()
-                            break
-                    else:
-                        # if it doesn't, make a new book with new info
-                        f = open("books.txt", "a")
-                        f.write(f"{ISBN_var}|{bookname_var}\n")
-                        popup("Adding book complete! You can now close this window.")
+                f = open("books.txt", "r")
+                for i in f.readlines():
+                    if i.split("|")[0] == ISBN_var:
+                        popup("ISBN allerede lagt til")
                         f.close()
+                        break
+                else:
+                    # if it doesn't, make a new book with new info
+                    f = open("books.txt", "a")
+                    f.write(f"{ISBN_var}|{bookname_var}\n")
+                    popup("Adding book complete! You can now close this window.")
+                    f.close()
 
                 
         submit_button = Button(addB, text="Add Book", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
