@@ -57,13 +57,127 @@ def appScreen(username, studentID):
     welcome_label.pack(pady=60)
 
 
+    def bookrent():
+
+
+        renB = Tk()
+        renB.geometry("400x500")
+        renB.iconbitmap("logo.ico")
+        renB.title("BibloApp")
+        renB.config(background="#04386b")
+        renB.resizable(False, False)
+
+        # Widgets
+
+        header = Label(renB, text="Rent")
+        header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
+        header.pack(pady=25)
+
+
+        books = []
+
+        f = open("books.txt", "r")
+        for i in f.readlines():
+            i = i.split("|")
+            books.append(f"{i[0]}: {i[1]}")
+        
+        book_combobox = ttk.Combobox(renB)
+        book_combobox.config(values=books)
+        book_combobox.config(background=secBlue, foreground="white", width=50)
+        book_combobox['state'] = 'readonly'
+        book_combobox.pack(pady=(50,0))
+
+        def rentbook():
+
+            book = book_combobox.get()
+            book = book.split(":") 
+            book = f"{book[0].strip()}|{book[1].strip()}" # <ISBN>: <NAME> -> <ISBN>|<NAME>
+            print(f"renting book for studentID: {studentID}")
+
+            # remove book
+            with open("rented.txt", "a") as f:
+                f.write(f"{book}|{studentID}")
+                popup("Book successfully rented!\nYou may now close this window.")
+
+
+            with open("books.txt", "r+") as f:
+                d = f.readlines()
+                f.seek(0)
+                for i in d:
+                    if i.strip("\n") != book:
+                        f.write(i)
+                f.truncate()
+
+        submit_button = Button(renB, text="Rent Book", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
+        submit_button.config(command=rentbook)
+        submit_button.pack(pady=25)
+        
+    def bookreturn():
+
+        retB = Tk()
+        retB.geometry("400x500")
+        retB.iconbitmap("logo.ico")
+        retB.title("BibloApp")
+        retB.config(background="#04386b")
+        retB.resizable(False, False)
+
+        # Widgets
+
+        header = Label(retB, text="Return")
+        header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
+        header.pack(pady=25)
+
+
+        books = []
+
+        f = open("rented.txt", "r")
+        for i in f.readlines():
+            i = i.split("|")
+            if i[2].strip() == studentID:
+                books.append(f"{i[0]}: {i[1]}")
+        
+        book_combobox = ttk.Combobox(retB)
+        book_combobox.config(values=books)
+        book_combobox.config(background=secBlue, foreground="white", width=50)
+        book_combobox['state'] = 'readonly'
+        book_combobox.pack(pady=(50,0))
+
+        def returnbook():
+
+            book = book_combobox.get()
+            book = book.split(":") 
+            book = f"{book[0].strip()}|{book[1].strip()}" # <ISBN>: <NAME> -> <ISBN>|<NAME>
+            print(f"renting book for studentID: {studentID}")
+
+            # remove book
+            with open("books.txt", "a") as f:
+                f.write(f"\n{book}")
+                popup("Book successfully returned!\nYou may now close this window.")
+
+
+            with open("rented.txt", "r+") as f:
+                d = f.readlines()
+                f.seek(0)
+                for i in d:
+                    if i.strip("\n") != f"{book}|{studentID}":
+                        f.write(i)
+                f.truncate()
+
+        submit_button = Button(retB, text="Add Book", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
+        submit_button.config(command=returnbook)
+        submit_button.pack(pady=25)
+
+
+
+
+
 
     # BUTTONS
 
-    rent_button = Button(appS, text="Rent Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15")
+    rent_button = Button(appS, text="Rent Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookrent)
     rent_button.pack(pady=(40, 0))
 
-    return_button = Button(appS, text="Return Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15")
+    return_button = Button(appS, text="Return Book", font=('JetBrains mono', 22), bg="#11589e", fg="white", relief="flat", width="15", command=bookreturn)
     return_button.pack(pady=(15, 0))
 
 
@@ -112,24 +226,29 @@ def appScreen(username, studentID):
 
             bookname_var = bookname_entry.get()
             ISBN_var = ISBN_entry.get()
-            
-            if len(bookname_var) == 0 or len(ISBN_var) == 0:
-                popup("One of the fields are empty!\n please fill all fields")
-            else:
-                # check if ISBN already exists
 
-                f = open("books.txt", "r")
-                for i in f.readlines():
-                    if i.split("|")[0] == ISBN_var:
-                        popup("ISBN allerede lagt til")
-                        f.close()
-                        break
+            try:
+                ISBN_var = int(ISBN_entry) 
+            except: popup("ISBN can only be a number")
+            else:
+            
+                if len(bookname_var) == 0 or len(ISBN_var) == 0:
+                    popup("One of the fields are empty!\n please fill all fields")
                 else:
-                    # if it doesn't, make a new book with new info
-                    f = open("books.txt", "a")
-                    f.write(f"{ISBN_var}|{bookname_var}\n")
-                    popup("Adding book complete! You can now close this window.")
-                    f.close()
+                    # check if ISBN already exists
+
+                    f = open("books.txt", "r")
+                    for i in f.readlines():
+                        if i.split("|")[0] == ISBN_var:
+                            popup("ISBN allerede lagt til")
+                            f.close()
+                            break
+                    else:
+                        # if it doesn't, make a new book with new info
+                        f = open("books.txt", "a")
+                        f.write(f"{ISBN_var}|{bookname_var}\n")
+                        popup("Adding book complete! You can now close this window.")
+                        f.close()
 
                 
         submit_button = Button(addB, text="Add Book", font=('JetBrains mono', 15), bg="#11589e", fg="white", relief="flat", width="15")
@@ -201,38 +320,6 @@ def appScreen(username, studentID):
 
     ###########################################
 
-
-    def bookrent():
-
-
-        remB = Tk()
-        remB.geometry("400x500")
-        remB.iconbitmap("logo.ico")
-        remB.title("BibloApp")
-        remB.config(background="#04386b")
-        remB.resizable(False, False)
-
-        # Widgets
-
-        header = Label(remB, text="Remove")
-        header.config(font=('Akira Expanded', 40), bg="#04386b", fg="white")
-        header.pack(pady=25)
-
-
-        books = []
-
-        f = open("books.txt", "r")
-        for i in f.readlines():
-            i = i.split("|")
-            books.append(f"{i[0]}: {i[1]}")
-        
-        book_combobox = ttk.Combobox(remB)
-        book_combobox.config(values=books)
-        book_combobox.config(background=secBlue, foreground="white", width=50)
-        book_combobox['state'] = 'readonly'
-        book_combobox.pack(pady=(50,0))
-
-        
 
 
     if int(studentID) == 1:
