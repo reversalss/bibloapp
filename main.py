@@ -96,7 +96,7 @@ def appScreen(username, studentID):
 
             # remove book
             with open("rented.txt", "a") as f:
-                f.write(f"{book}|{studentID}")
+                f.write(f"\n{book}|{studentID}")
                 popup("Book successfully rented!\nYou may now close this window.")
 
 
